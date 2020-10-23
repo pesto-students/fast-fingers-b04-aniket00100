@@ -1,0 +1,24 @@
+.text {
+  color: white;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.scores-box {
+  min-height: 50px;
+  width: 80%;
+  border: 3px solid white;
+  border-radius: 20px;
+  margin: auto;
+}
+
+.div-timer {
+  width: 90%;
+  margin: auto;
+}
+
+.timer {
+  margin: auto;
+}
