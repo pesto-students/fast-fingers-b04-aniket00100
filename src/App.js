@@ -6,7 +6,7 @@ import './App.css';
 function App() {
   return (
     <div className="App">
-      <Game playerName="Aniket" level="Medium" />
+      <Game playerName="Aniket" level="easy" />
     </div>
   );
 }

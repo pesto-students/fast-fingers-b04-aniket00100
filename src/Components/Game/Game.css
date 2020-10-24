@@ -10,7 +10,7 @@
   min-height: 50px;
   width: 80%;
   border: 3px solid white;
-  border-radius: 20px;
+  /* border-radius: 20px; */
   margin: auto;
 }
 
@@ -21,4 +21,21 @@
 
 .timer {
   margin: auto;
+}
+
+.input-box {
+  background-color: rgba(0, 0, 0, 0.226);
+  height: 50px;
+  font-size: 1.5rem;
+  font-weight: 800;
+  border: none;
+  border: 2px solid white;
+  color: white;
+  text-transform: uppercase;
+}
+
+.new-word {
+  font-size: 2rem;
+  color: white;
+  font-weight: 800;
 }
