@@ -1,6 +1,6 @@
 import React from 'react';
 
-import CountDownTimer from '../CountdownTimer/CountDownTimer';
+import CountDownTimer from '../CountdownTimer/Countdown2';
 import data from '../../data/dictionary.json';
 import './Game.css';
 
@@ -16,6 +16,8 @@ export default class Game extends React.Component {
       words: {},
       timeForWord: 10,
       gameOver: false,
+      currentScore: 0,
+      scores: [],
     };
   }
 
@@ -122,8 +124,9 @@ export default class Game extends React.Component {
     if (this.state.startTimer) {
       timerComponent = (
         <CountDownTimer
-          startTimeInSeconds={this.state.timeForWord}
+          timeForWord={this.state.timeForWord}
           onGameOver={this.onGameOver}
+          word={this.state.currentWord}
         />
       );
     } else timerComponent = <h3 className="text">Loading...</h3>;
