@@ -7,7 +7,8 @@ import './Game.css';
 export default class Game extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
+
+    this.INITIAL_STATE = {
       currentWord: '',
       userInput: '',
       startTimer: false,
@@ -17,8 +18,10 @@ export default class Game extends React.Component {
       timeForWord: 10,
       gameOver: false,
       currentScore: 0,
-      scores: [],
     };
+
+    this.state = { ...this.INITIAL_STATE };
+    this.scoreList = [];
   }
 
   componentDidMount() {
@@ -89,35 +92,59 @@ export default class Game extends React.Component {
     );
   };
 
+  getScoreList = () => {
+    if (this.scoreList.length === 0) {
+      return;
+    }
+    const scoresList = this.scoreList.map((score, i) => (
+      <p key={i} className="text">{`Score #${i + 1}: ${score}`}</p>
+    ));
+    return scoresList;
+  };
+
   onUserInputChange = (event) => {
     const value = event.target.value.toUpperCase();
     if (value === this.state.currentWord) {
       const difficultyFactor = this.state.difficultyFactor + 0.1;
-      const level =
-        difficultyFactor > 2
-          ? 'hard'
-          : difficultyFactor < 1.5
-          ? 'easy'
-          : 'medium';
+
+      let level;
+      if (difficultyFactor >= 2) level = 'hard';
+      else if (difficultyFactor < 1.5) level = 'easy';
+      else level = 'medium';
+
+      if (this.state.level !== level) console.log('level changed!');
+
       const newWord = this.getNewWord(this.state.words, difficultyFactor);
       const timeForWord = Math.floor(newWord.length / difficultyFactor) + 1;
+
       this.setState({
         ...this.state,
         currentWord: newWord,
         userInput: '',
         timeForWord: timeForWord,
         level: level,
+        difficultyFactor: parseFloat(difficultyFactor.toFixed(1)),
       });
     } else {
-      this.setState({ userInput: value });
+      this.setState({ ...this.state, userInput: value });
     }
   };
 
+  setScore = (value) => {
+    this.setState({ ...this.state, currentScore: value });
+  };
+
   onGameOver = () => {
+    this.scoreList.push(this.state.currentScore);
     this.setState({ ...this.state, gameOver: true });
   };
 
+  onPlayAgain = () => {
+    this.setState({ ...this.INITIAL_STATE }, this.componentDidMount);
+  };
+
   render() {
+    console.log(this.state.currentScore);
     // if creating three arrays takes time
 
     let timerComponent;
@@ -127,6 +154,7 @@ export default class Game extends React.Component {
           timeForWord={this.state.timeForWord}
           onGameOver={this.onGameOver}
           word={this.state.currentWord}
+          setScore={this.setScore}
         />
       );
     } else timerComponent = <h3 className="text">Loading...</h3>;
@@ -134,7 +162,15 @@ export default class Game extends React.Component {
     // game over check
     let gameControls;
     if (this.state.gameOver) {
-      gameControls = <h1 className="text-center text">GAME OVER!!!!!</h1>;
+      gameControls = (
+        <div className="text-center text">
+          <h1>GAME OVER!!!!!</h1>
+          <br></br>
+          <h1>{`Your Score ${this.state.currentScore}`}</h1>
+          <br></br>
+          <button onClick={this.onPlayAgain}>Play Again</button>
+        </div>
+      );
     } else {
       gameControls = (
         <div className="div-timer text-center">
@@ -163,12 +199,12 @@ export default class Game extends React.Component {
                 {`Player Name: ${this.props.playerName}`}
               </div>
               <br />
-              <div className="text">{`Level: ${this.props.level}`}</div>
+              <div className="text">{`Level: ${this.state.level}`}</div>
             </div>
             <div className="p-2">
               <div className="text">Fast Fingers</div>
               <br />
-              <div className="text">{`Current Score: 00:00`}</div>
+              <div className="text">{`Current Score: ${this.state.currentScore}`}</div>
             </div>
           </div>
         </div>
@@ -176,10 +212,10 @@ export default class Game extends React.Component {
         <div className="row mt-5">
           <div className="col-md-3">
             <div className="text-center">
-              <p className="text">Scores</p>
               <div className="scores-box">
                 <div className="mt-2">
-                  <p className="text">score #</p>
+                  <h3 className="text">Scores</h3>
+                  {this.getScoreList()}
                 </div>
               </div>
             </div>

@@ -35,6 +35,7 @@
 
   /* Sort of an arbitrary number; adjust to your liking */
   font-size: 48px;
+  color: white;
 }
 
 .base-timer__path-remaining {

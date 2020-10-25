@@ -7,8 +7,10 @@ export default class CountdownTimer extends React.Component {
     super(props);
     this.state = {
       timeLeft: props.timeForWord,
+      prevWordTime: props.timeForWord,
       strokeDasharray: '283',
       maxTimer: 10,
+      currentScore: 0,
     };
     this.timer = null;
   }
@@ -23,12 +25,30 @@ export default class CountdownTimer extends React.Component {
   componentDidUpdate(prevProps) {
     if (prevProps.word !== this.props.word) {
       if (this.timer !== null) clearInterval(this.timer);
+      const score = this.state.prevWordTime - this.state.timeLeft;
       this.timer = setInterval(() => {
         this.decrementTimeRemaining();
-        this.setCircleDashArray(this.state.maxTimer);
+        this.setCircleDashArray(this.props.timeForWord);
       }, 1000);
-      this.setState({ ...this.state, timeLeft: this.props.timeForWord });
+
+      this.setState(
+        {
+          ...this.state,
+          timeLeft: this.props.timeForWord,
+          currentScore: this.state.currentScore + score,
+          prevWordTime: prevProps.timeForWord,
+        },
+        () => {
+          console.log(this.props);
+          this.props.setScore(this.state.currentScore);
+        }
+      );
     }
+  }
+
+  componentWillUnmount() {
+    console.log('this executed!');
+    clearInterval(this.timer);
   }
 
   decrementTimeRemaining = () => {
@@ -37,8 +57,8 @@ export default class CountdownTimer extends React.Component {
         timeLeft: this.state.timeLeft - 1,
       });
     } else {
-      this.props.onGameOver();
       clearInterval(this.timer);
+      // this.props.onGameOver();
     }
   };
 
@@ -61,6 +81,7 @@ export default class CountdownTimer extends React.Component {
   };
 
   render() {
+    // console.log('current score = ', this.state.currentScore);
     return (
       <div className="base-timer">
         <svg
