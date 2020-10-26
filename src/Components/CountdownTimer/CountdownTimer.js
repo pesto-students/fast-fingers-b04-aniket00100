@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './Countdown2.css';
+import './CountdownTimer.css';
 
 export default class CountdownTimer extends React.Component {
   constructor(props) {
@@ -22,6 +22,14 @@ export default class CountdownTimer extends React.Component {
     }, 1000);
   }
 
+  // the words are coming in from the parent(Game) component
+  // here checking if a new word has come.
+  // if and only if a new word comes in the props, then this component should update
+  // when the setState is triggered, I am passing a callback function to setState call
+  // which I am recieving in props
+  // this callback function calls setScore function from the parent
+  // which updates the SCORE value in realtime that can be seen on the scree.
+
   componentDidUpdate(prevProps) {
     if (prevProps.word !== this.props.word) {
       if (this.timer !== null) clearInterval(this.timer);
@@ -39,17 +47,23 @@ export default class CountdownTimer extends React.Component {
           prevWordTime: prevProps.timeForWord,
         },
         () => {
-          console.log(this.props);
           this.props.setScore(this.state.currentScore);
         }
       );
     }
   }
 
+  // added because of the error
+  // canceling subscription of all timers
+
   componentWillUnmount() {
-    console.log('this executed!');
+    console.log('component will unmount!');
     clearInterval(this.timer);
   }
+
+  // decerements the time you see inside the countdown timer
+  // also handles gameOver scenario
+  // clears the set interval when game over condition occurs
 
   decrementTimeRemaining = () => {
     if (this.state.timeLeft > 0) {
@@ -58,9 +72,12 @@ export default class CountdownTimer extends React.Component {
       });
     } else {
       clearInterval(this.timer);
-      // this.props.onGameOver();
+      this.props.onGameOver();
     }
   };
+
+  // function responsible for converting time to mm:ss format
+  // everywhere time is stored in seconds
 
   renderTime = (time) => {
     const minutes = Math.floor(time / 60);
@@ -71,17 +88,18 @@ export default class CountdownTimer extends React.Component {
     return `${minutes}:${seconds}`;
   };
 
+  // this makes the countdown timer animation move
+
   setCircleDashArray = (maxTimer) => {
     let rawTimeFraction = this.state.timeLeft / maxTimer;
     rawTimeFraction = rawTimeFraction - (1 / maxTimer) * (1 - rawTimeFraction);
-    const circleDashArrayY = 283;
+    const circleDashArrayY = 283; //circumference of timer circle because the radius of svg circle is 45
     const circleDashArrayX = (rawTimeFraction * circleDashArrayY).toFixed(0);
     const strokeDashArray = `${circleDashArrayX} ${circleDashArrayY}`;
     this.setState({ ...this.state, strokeDasharray: strokeDashArray });
   };
 
   render() {
-    // console.log('current score = ', this.state.currentScore);
     return (
       <div className="base-timer">
         <svg

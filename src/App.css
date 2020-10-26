@@ -1,13 +1,97 @@
-.App-header {
-  min-height: 90vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  /* font-size: calc(10px + 2vmin); */
-  color: white;
+.img-keyboard {
+  width: 150px;
+  height: 100px;
 }
 
-.App {
+.text {
+  color: #ff5155;
+  margin: auto;
+}
+
+.player-form {
+  width: 300px;
+}
+
+/* .player-form-element {
+  width: 300px;
+  height: 60px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+} */
+
+.input-name {
+  width: 350px;
+  height: 50px;
+  background-color: #ffff;
+  opacity: 0.59;
+  border-radius: 5px;
+  box-shadow: 0 3px 16px 0 rgba(0, 0, 0, 0.8);
+  padding-left: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  color: #032228;
+}
+
+.select-level {
+  width: 350px;
+  height: 50px;
+  margin-right: 0;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  border-radius: 5px;
+  background-color: transparent;
+  box-shadow: 0 3px 16px 0 rgba(0, 0, 0, 0.8);
+  border: solid 1px #ffffff;
+  color: #97a5a7;
+  padding-left: 22px;
+  /* padding-right: 20px; */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.app {
+  height: 100%;
   overflow-x: hidden;
+}
+
+.start-game-element {
+  margin: auto;
+  text-align: center;
+  align-content: center;
+  object-position: center;
+  vertical-align: middle;
+}
+
+.div-title {
+  margin-top: 7%;
+}
+
+.btn-start-game {
+  background-color: transparent;
+  font-size: 1.5rem;
+  border: none;
+  outline: none;
+  color: #ff5155;
+  padding-right: 20px;
+  margin-top: 30px;
+}
+
+.icon-play {
+  max-width: 4rem;
+  max-height: 4rem;
+  margin-right: 10px;
+  padding-bottom: 10px;
+}
+
+.input-error {
+  color: red;
+}
+
+.btn-quit-game {
+  background-color: transparent;
+  font-size: 1.5rem;
+  border: none;
+  outline: none;
+  color: #ff5155;
 }

@@ -4,9 +4,5 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: 'Press Start 2P', cursive;
 }
