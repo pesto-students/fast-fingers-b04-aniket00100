@@ -1,6 +1,7 @@
 import React from 'react';
 
 import CountDownTimer from '../CountdownTimer/CountdownTimer';
+import Score from '../Score/Score';
 import data from '../../data/dictionary.json';
 import './Game.css';
 
@@ -36,9 +37,13 @@ export default class Game extends React.Component {
     const hardWords = [];
 
     for (let word of data) {
-      if (word.length <= 4) easyWords.push(word);
-      else if (word.length <= 8) mediumWords.push(word);
-      else hardWords.push(word);
+      if (word.length <= 4) {
+        easyWords.push(word);
+      } else if (word.length <= 8) {
+        mediumWords.push(word);
+      } else {
+        hardWords.push(word);
+      }
     }
     const words = { easy: easyWords, medium: mediumWords, hard: hardWords };
 
@@ -53,7 +58,8 @@ export default class Game extends React.Component {
     }
 
     const newWord = this.getNewWord(words, difficultyFactor);
-    const timeForWord = Math.floor(newWord.length / difficultyFactor) + 1;
+    let timeForWord = Math.round(newWord.length / difficultyFactor);
+    timeForWord = Math.max(timeForWord, 2);
 
     this.setState({
       ...this.state,
@@ -101,7 +107,8 @@ export default class Game extends React.Component {
       if (this.state.level !== level) console.log('level changed!');
 
       const newWord = this.getNewWord(this.state.words, difficultyFactor);
-      const timeForWord = Math.floor(newWord.length / difficultyFactor) + 1;
+      let timeForWord = Math.round(newWord.length / difficultyFactor);
+      timeForWord = Math.max(timeForWord, 2);
 
       this.setState({
         ...this.state,
@@ -218,7 +225,6 @@ export default class Game extends React.Component {
           timeForWord={this.state.timeForWord}
           onGameOver={this.onGameOver}
           word={this.state.currentWord}
-          setScore={this.setScore}
         />
       );
     } else timerComponent = <h3 className="text">Loading...</h3>;
@@ -229,8 +235,13 @@ export default class Game extends React.Component {
         <h3 className="text-white">New High Score!</h3>
       ) : null;
 
-    // game over check
+    // displaying the proper components based on game state
+    // if game is on or over
+
     let gameControls;
+
+    let scoreComponent;
+
     if (this.state.gameOver) {
       gameControls = (
         <div className="text-center text-white">
@@ -252,6 +263,12 @@ export default class Game extends React.Component {
           </button>
         </div>
       );
+
+      scoreComponent = (
+        <span>{`SCORE: ${this.convertSecondsToMMSS(
+          this.state.currentScore
+        )}`}</span>
+      );
     } else {
       gameControls = (
         <div className="div-timer text-center">
@@ -267,6 +284,14 @@ export default class Game extends React.Component {
           ></input>
           <br></br>
         </div>
+      );
+
+      scoreComponent = (
+        <Score
+          convertSecondsToMMSS={this.convertSecondsToMMSS}
+          gameOver={this.state.gameOver}
+          setScore={this.setScore}
+        />
       );
     }
 
@@ -303,9 +328,8 @@ export default class Game extends React.Component {
               {this.props.playerName}
             </div>
             <br />
-            <div className="text text-heading">{`SCORE: ${this.convertSecondsToMMSS(
-              this.state.currentScore
-            )}`}</div>
+
+            <div className="text text-heading">{scoreComponent}</div>
           </div>
         </div>
 

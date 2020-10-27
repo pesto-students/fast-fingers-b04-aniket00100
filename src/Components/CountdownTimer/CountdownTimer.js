@@ -25,10 +25,6 @@ export default class CountdownTimer extends React.Component {
   // the words are coming in from the parent(Game) component
   // here checking if a new word has come.
   // if and only if a new word comes in the props, then this component should update
-  // when the setState is triggered, I am passing a callback function to setState call
-  // which I am recieving in props
-  // this callback function calls setScore function from the parent
-  // which updates the SCORE value in realtime that can be seen on the scree.
 
   componentDidUpdate(prevProps) {
     if (prevProps.word !== this.props.word) {
@@ -39,17 +35,13 @@ export default class CountdownTimer extends React.Component {
         this.setCircleDashArray(this.props.timeForWord);
       }, 1000);
 
-      this.setState(
-        {
-          ...this.state,
-          timeLeft: this.props.timeForWord,
-          currentScore: this.state.currentScore + score,
-          prevWordTime: prevProps.timeForWord,
-        },
-        () => {
-          this.props.setScore(this.state.currentScore);
-        }
-      );
+      this.setState({
+        ...this.state,
+        timeLeft: this.props.timeForWord,
+        currentScore: this.state.currentScore + score,
+        prevWordTime: prevProps.timeForWord,
+        strokeDashArray: '283 283',
+      });
     }
   }
 
@@ -80,12 +72,12 @@ export default class CountdownTimer extends React.Component {
   // everywhere time is stored in seconds
 
   renderTime = (time) => {
-    const minutes = Math.floor(time / 60);
+    // const minutes = Math.floor(time / 60);
     let seconds = time % 60;
-    if (seconds < 10) {
-      seconds = `0${seconds}`;
-    }
-    return `${minutes}:${seconds}`;
+    // if (seconds < 10) {
+    //   seconds = `0${seconds}`;
+    // }
+    return `${seconds}`;
   };
 
   // this makes the countdown timer animation move
