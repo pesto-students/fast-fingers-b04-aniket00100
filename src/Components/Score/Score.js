@@ -14,8 +14,6 @@ export default class Score extends React.Component {
   }
 
   componentWillUnmount() {
-    // this.props.setScore(this.state.currentScore);
-    console.log('score will unmount!');
     clearInterval(this.timer);
   }
 
@@ -27,12 +25,9 @@ export default class Score extends React.Component {
 
   updateScore = (message) => {
     // console.log(message);
-    this.setState(
-      { ...this.state, currentScore: this.state.currentScore + 1 },
-      () => {
-        this.props.setScore(this.state.currentScore - 1);
-      }
-    );
+    this.setState({ currentScore: this.state.currentScore + 1 }, () => {
+      this.props.setScore(this.state.currentScore - 1);
+    });
   };
 
   render() {

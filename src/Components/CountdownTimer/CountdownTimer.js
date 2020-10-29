@@ -36,7 +36,6 @@ export default class CountdownTimer extends React.Component {
       }, 1000);
 
       this.setState({
-        ...this.state,
         timeLeft: this.props.timeForWord,
         currentScore: this.state.currentScore + score,
         prevWordTime: prevProps.timeForWord,
@@ -49,7 +48,6 @@ export default class CountdownTimer extends React.Component {
   // canceling subscription of all timers
 
   componentWillUnmount() {
-    console.log('component will unmount!');
     clearInterval(this.timer);
   }
 
@@ -88,7 +86,7 @@ export default class CountdownTimer extends React.Component {
     const circleDashArrayY = 283; //circumference of timer circle because the radius of svg circle is 45
     const circleDashArrayX = (rawTimeFraction * circleDashArrayY).toFixed(0);
     const strokeDashArray = `${circleDashArrayX} ${circleDashArrayY}`;
-    this.setState({ ...this.state, strokeDasharray: strokeDashArray });
+    this.setState({ strokeDasharray: strokeDashArray });
   };
 
   render() {
