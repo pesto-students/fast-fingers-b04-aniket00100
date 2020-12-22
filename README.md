@@ -1,7 +1,3 @@
-# App link - https://zen-liskov-a91da9.netlify.app/
-
-**Developer's note: Try the `MEDIUM` or `HARD` level when you play to check for all the MVP implementations**
-
 # Fast Fingers
 
 Pesto Tech is proudly launching its own speed typing game named **Fast fingers**. You have been awarded with the project and you need to design and develop this project which should
