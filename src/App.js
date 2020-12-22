@@ -1,7 +1,10 @@
 import React from 'react';
 
 import Game from './Components/Game/Game';
-// import Countdown from './Components/CountdownTimer/Countdown2';
+
+import keyboard from './images/icons/keyboard.png';
+import playAgain from './images/icons/play.png';
+import cross from './images/icons/cross.png';
 import './App.css';
 
 class App extends React.Component {
@@ -10,7 +13,7 @@ class App extends React.Component {
     this.initialState = {
       gameOn: false,
       playerName: '',
-      selectedLevel: 'default',
+      selectedLevel: 'easy',
       playerNameError: '',
       selectedLevelError: '',
     };
@@ -22,7 +25,6 @@ class App extends React.Component {
   setLevel = (event) => {
     const value = event.target.value;
     this.setState({
-      ...this.state,
       selectedLevel: value,
       selectedLevelError: '',
     });
@@ -33,7 +35,6 @@ class App extends React.Component {
   onPlayerNameChange = (event) => {
     const value = event.target.value;
     this.setState({
-      ...this.state,
       playerName: value,
       playerNameError: '',
     });
@@ -48,19 +49,9 @@ class App extends React.Component {
 
   validateInput = () => {
     let playerNameError = '';
-    let selectedLevelError = '';
     if (this.state.playerName.length === 0) {
       playerNameError = 'Please enter your name.';
-    }
-    if (this.state.selectedLevel === 'default') {
-      selectedLevelError = 'Please select a level.';
-    }
-    if (playerNameError.length > 0 && selectedLevelError.length > 0) {
-      this.setState({
-        ...this.state,
-        playerNameError: playerNameError,
-        selectedLevelError: selectedLevelError,
-      });
+      this.setState({ playerNameError });
       return false;
     }
     return true;
@@ -72,10 +63,8 @@ class App extends React.Component {
 
   onStartGame = () => {
     const isValid = this.validateInput();
-    console.log(isValid);
-    console.log(this.state);
     if (isValid) {
-      this.setState({ ...this.state, gameOn: true });
+      this.setState({ gameOn: true });
     }
   };
 
@@ -83,7 +72,7 @@ class App extends React.Component {
   // when 'stop game; button is clicked, the state is set to initial state.
 
   onStopGame = () => {
-    this.setState({ ...this.initialState });
+    this.setState(this.initialState);
   };
 
   // returns JSX that displays the landing component
@@ -93,11 +82,7 @@ class App extends React.Component {
     return (
       <div className="start-game-element">
         <div className="div-title">
-          <img
-            src={require('./images/icons/keyboard.png')}
-            alt="Fast Fingers"
-            className="img-keyboard"
-          ></img>
+          <img src={keyboard} alt="Fast Fingers" className="img-keyboard"></img>
           <br></br>
           <br></br>
           <h1 className="text">FAST FINGERS</h1>
@@ -113,14 +98,9 @@ class App extends React.Component {
           <br></br>
           <select
             className="select-level"
-            // aria-label="Default select example"
-            placeholder="DIFFICULTY LEVEL"
             onChange={this.setLevel}
-            defaultValue="default"
+            defaultValue="easy"
           >
-            <option value="default" disabled>
-              DIFFICULTY LEVEL
-            </option>
             <option value="easy">EASY</option>
             <option value="medium">MEDIUM</option>
             <option value="hard">HARD</option>
@@ -128,11 +108,7 @@ class App extends React.Component {
           <div className="input-error">{this.state.selectedLevelError}</div>
           <br></br>
           <button className="btn-start-game" onClick={this.onStartGame}>
-            <img
-              className="icon-play"
-              src={require('./images/icons/play.png')}
-              alt=""
-            />
+            <img className="icon-play" src={playAgain} alt="" />
             START GAME
           </button>
         </div>
@@ -155,11 +131,7 @@ class App extends React.Component {
           <div className="col-md-3">
             <div className="start-game-element">
               <button className="btn-quit-game" onClick={this.onStopGame}>
-                <img
-                  className="icon-play"
-                  src={require('./images/icons/cross.png')}
-                  alt=""
-                />
+                <img className="icon-play" src={cross} alt="" />
                 STOP GAME
               </button>
             </div>

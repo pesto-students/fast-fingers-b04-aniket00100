@@ -8,17 +8,16 @@ export default class CountdownTimer extends React.Component {
     this.state = {
       timeLeft: props.timeForWord,
       prevWordTime: props.timeForWord,
-      strokeDasharray: '283',
       maxTimer: 10,
       currentScore: 0,
     };
     this.timer = null;
+    this.timerRef = React.createRef();
   }
 
   componentDidMount() {
     this.timer = setInterval(() => {
       this.decrementTimeRemaining();
-      this.setCircleDashArray(this.props.timeForWord);
     }, 1000);
   }
 
@@ -32,15 +31,14 @@ export default class CountdownTimer extends React.Component {
       const score = this.state.prevWordTime - this.state.timeLeft;
       this.timer = setInterval(() => {
         this.decrementTimeRemaining();
-        this.setCircleDashArray(this.props.timeForWord);
       }, 1000);
 
+      this.timerRef.current.setAttribute('stroke-dasharray', '283 283');
+
       this.setState({
-        ...this.state,
         timeLeft: this.props.timeForWord,
         currentScore: this.state.currentScore + score,
         prevWordTime: prevProps.timeForWord,
-        strokeDashArray: '283 283',
       });
     }
   }
@@ -49,7 +47,6 @@ export default class CountdownTimer extends React.Component {
   // canceling subscription of all timers
 
   componentWillUnmount() {
-    console.log('component will unmount!');
     clearInterval(this.timer);
   }
 
@@ -59,9 +56,14 @@ export default class CountdownTimer extends React.Component {
 
   decrementTimeRemaining = () => {
     if (this.state.timeLeft > 0) {
-      this.setState({
-        timeLeft: this.state.timeLeft - 1,
-      });
+      this.setState(
+        {
+          timeLeft: this.state.timeLeft - 1,
+        },
+        () => {
+          this.setCircleDasharray();
+        }
+      );
     } else {
       clearInterval(this.timer);
       this.props.onGameOver();
@@ -72,23 +74,23 @@ export default class CountdownTimer extends React.Component {
   // everywhere time is stored in seconds
 
   renderTime = (time) => {
-    // const minutes = Math.floor(time / 60);
     let seconds = time % 60;
-    // if (seconds < 10) {
-    //   seconds = `0${seconds}`;
-    // }
+
     return `${seconds}`;
   };
 
+  calculateTimeFraction = () => {
+    return this.state.timeLeft / this.props.timeForWord;
+  };
   // this makes the countdown timer animation move
 
-  setCircleDashArray = (maxTimer) => {
-    let rawTimeFraction = this.state.timeLeft / maxTimer;
-    rawTimeFraction = rawTimeFraction - (1 / maxTimer) * (1 - rawTimeFraction);
-    const circleDashArrayY = 283; //circumference of timer circle because the radius of svg circle is 45
-    const circleDashArrayX = (rawTimeFraction * circleDashArrayY).toFixed(0);
-    const strokeDashArray = `${circleDashArrayX} ${circleDashArrayY}`;
-    this.setState({ ...this.state, strokeDasharray: strokeDashArray });
+  setCircleDasharray = () => {
+    const circleDasharray = `${(this.calculateTimeFraction() * 283).toFixed(
+      0
+    )} 283`;
+    if (this.timerRef && this.timerRef.current) {
+      this.timerRef.current.setAttribute('stroke-dasharray', circleDasharray);
+    }
   };
 
   render() {
@@ -107,8 +109,9 @@ export default class CountdownTimer extends React.Component {
               r="45"
             />
             <path
+              ref={this.timerRef}
               id="base-timer-path-remaining"
-              strokeDasharray={this.state.strokeDasharray}
+              strokeDasharray="283"
               className="base-timer__path-remaining"
               d="
           M 50, 50

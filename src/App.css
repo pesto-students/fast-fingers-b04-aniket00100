@@ -44,7 +44,6 @@
   border: solid 1px #ffffff;
   color: #97a5a7;
   padding-left: 22px;
-  /* padding-right: 20px; */
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -75,6 +74,11 @@
   color: #ff5155;
   padding-right: 20px;
   margin-top: 30px;
+}
+
+.btn-start-game:focus {
+  border: none;
+  outline: none;
 }
 
 .icon-play {

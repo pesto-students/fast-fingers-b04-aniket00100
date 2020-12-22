@@ -3,13 +3,18 @@ import React from 'react';
 import CountDownTimer from '../CountdownTimer/CountdownTimer';
 import Score from '../Score/Score';
 import data from '../../data/dictionary.json';
+
+import person from '../../images/icons/person.png';
+import gamepad from '../../images/icons/gamepad.png';
+import keyboard from '../../images/icons/keyboard.png';
+import reload from '../../images/icons/reload.png';
 import './Game.css';
 
 export default class Game extends React.Component {
   constructor(props) {
     super(props);
 
-    this.INITIAL_STATE = {
+    this.initialState = {
       currentWord: '',
       userInput: '',
       startTimer: false,
@@ -21,7 +26,7 @@ export default class Game extends React.Component {
       currentScore: 0,
     };
 
-    this.state = { ...this.INITIAL_STATE };
+    this.state = { ...this.initialState };
     this.scoreList = [];
     this.highScore = 0;
     this.highScoreIndex = 0;
@@ -62,7 +67,6 @@ export default class Game extends React.Component {
     timeForWord = Math.max(timeForWord, 2);
 
     this.setState({
-      ...this.state,
       startTimer: true,
       words: words,
       currentWord: newWord,
@@ -104,14 +108,11 @@ export default class Game extends React.Component {
       else if (difficultyFactor < 1.5) level = 'easy';
       else level = 'medium';
 
-      if (this.state.level !== level) console.log('level changed!');
-
       const newWord = this.getNewWord(this.state.words, difficultyFactor);
       let timeForWord = Math.round(newWord.length / difficultyFactor);
       timeForWord = Math.max(timeForWord, 2);
 
       this.setState({
-        ...this.state,
         currentWord: newWord,
         userInput: '',
         timeForWord: timeForWord,
@@ -119,7 +120,7 @@ export default class Game extends React.Component {
         difficultyFactor: parseFloat(difficultyFactor.toFixed(2)),
       });
     } else {
-      this.setState({ ...this.state, userInput: value });
+      this.setState({ userInput: value });
     }
   };
 
@@ -145,7 +146,7 @@ export default class Game extends React.Component {
   // parent(this) component requires the score only when the word changes and not every second.
 
   setScore = (value) => {
-    this.setState({ ...this.state, currentScore: value });
+    this.setState({ currentScore: value });
   };
 
   // handles game over condition
@@ -159,14 +160,14 @@ export default class Game extends React.Component {
       this.highScore = this.state.currentScore;
       this.highScoreIndex = this.scoreList.length - 1;
     }
-    this.setState({ ...this.state, gameOver: true });
+    this.setState({ gameOver: true });
   };
 
   // handles play again condition.
   // when the play again button is clicked, the state is set to initialState
 
   onPlayAgain = () => {
-    this.setState({ ...this.INITIAL_STATE }, this.componentDidMount);
+    this.setState(this.initialState, this.componentDidMount);
   };
 
   // this method returns the JSX component for the displayed word
@@ -254,11 +255,7 @@ export default class Game extends React.Component {
           {newHighScore}
           <br></br>
           <button className="btn-play-again" onClick={this.onPlayAgain}>
-            <img
-              className="icon-play-again"
-              src={require('../../images/icons/reload.png')}
-              alt=""
-            />
+            <img className="icon-play-again" src={reload} alt="" />
             PLAY AGAIN
           </button>
         </div>
@@ -300,31 +297,19 @@ export default class Game extends React.Component {
         <div className="row">
           <div className="col-md-9 mb-2">
             <h3 className="text text-heading">
-              <img
-                className="icon-player"
-                src={require('../../images/icons/keyboard.png')}
-                alt="Player"
-              />
+              <img className="icon-player" src={keyboard} alt="Player" />
               FAST FINGERS
             </h3>
 
             <br />
             <div className="text text-heading">
-              <img
-                className="icon-player"
-                src={require('../../images/icons/gamepad.png')}
-                alt="Player"
-              />
+              <img className="icon-player" src={gamepad} alt="Player" />
               {`LEVEL: ${this.state.level.toUpperCase()}`}
             </div>
           </div>
           <div className="col-md-3 mb-2">
             <div className="text text-heading">
-              <img
-                className="icon-player"
-                src={require('../../images/icons/person.png')}
-                alt="Player"
-              />
+              <img className="icon-player" src={person} alt="Player" />
               {this.props.playerName}
             </div>
             <br />
