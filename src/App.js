@@ -13,7 +13,7 @@ class App extends React.Component {
     this.initialState = {
       gameOn: false,
       playerName: '',
-      selectedLevel: 'default',
+      selectedLevel: 'easy',
       playerNameError: '',
       selectedLevelError: '',
     };
@@ -49,18 +49,9 @@ class App extends React.Component {
 
   validateInput = () => {
     let playerNameError = '';
-    let selectedLevelError = '';
     if (this.state.playerName.length === 0) {
       playerNameError = 'Please enter your name.';
-    }
-    if (this.state.selectedLevel === 'default') {
-      selectedLevelError = 'Please select a level.';
-    }
-    if (playerNameError.length > 0 && selectedLevelError.length > 0) {
-      this.setState({
-        playerNameError: playerNameError,
-        selectedLevelError: selectedLevelError,
-      });
+      this.setState({ playerNameError });
       return false;
     }
     return true;
@@ -107,14 +98,9 @@ class App extends React.Component {
           <br></br>
           <select
             className="select-level"
-            // aria-label="Default select example"
-            placeholder="DIFFICULTY LEVEL"
             onChange={this.setLevel}
-            defaultValue="default"
+            defaultValue="easy"
           >
-            <option value="default" disabled>
-              DIFFICULTY LEVEL
-            </option>
             <option value="easy">EASY</option>
             <option value="medium">MEDIUM</option>
             <option value="hard">HARD</option>
